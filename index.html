@@ -12,7 +12,55 @@
       rel="stylesheet"
     />
       <link rel="icon" href="data:," />
-  </head>
+  <!-- bare project styles: begin -->
+<style id="bare-project-styles">
+  /* Same charcoal / gray palette as the existing Discord activity card. */
+  #bare-project { margin-top: 2rem; min-width: 0; }
+  #bare-project .bare-heading { margin: 0 0 1rem; color: #71717a; font-size: .875rem; line-height: 1.25rem; font-weight: 500; }
+  #bare-project .bare-card { overflow: hidden; border: 1px solid rgba(255,255,255,.10); border-radius: .5rem; background: #181818; box-shadow: 0 10px 22px rgba(0,0,0,.16); transition: border-color .2s ease; }
+  #bare-project .bare-card:hover, #bare-project .bare-card:focus-within { border-color: rgba(255,255,255,.20); }
+  #bare-project .bare-toggle { display: flex; align-items: center; gap: 1rem; width: 100%; min-height: 84px; padding: 1rem; text-align: left; color: inherit; background: transparent; border: none; cursor: pointer; font: inherit; }
+  #bare-project .bare-toggle:focus-visible { outline: 2px solid #71717a; outline-offset: -4px; border-radius: .5rem; }
+  #bare-project .bare-header-copy { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: .27rem; }
+  #bare-project .bare-name { color: #e4e4e7; font-size: 1rem; line-height: 1.3; font-weight: 650; letter-spacing: -.02em; }
+  #bare-project .bare-subtitle { color: #a1a1aa; font-size: .77rem; line-height: 1.45; }
+  #bare-project .bare-phase { color: #71717a; font-size: .7rem; line-height: 1.4; }
+  #bare-project .bare-chevron { display: block; width: 8px; height: 8px; flex: 0 0 auto; margin: 0 5px 0 auto; border-bottom: 1.5px solid #a1a1aa; border-right: 1.5px solid #a1a1aa; transform: rotate(45deg); transition: transform .3s ease; }
+  #bare-project .bare-toggle[aria-expanded="true"] .bare-chevron { transform: rotate(225deg); }
+  #bare-project .bare-panel { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows .36s cubic-bezier(.2,.8,.2,1), opacity .28s ease, visibility 0s linear .36s; }
+  #bare-project .bare-card.is-open .bare-panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; transition: grid-template-rows .36s cubic-bezier(.2,.8,.2,1), opacity .28s ease, visibility 0s; }
+  #bare-project .bare-panel-inner { min-height: 0; overflow: hidden; }
+  #bare-project .bare-body { margin: 0 1rem 1.1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.08); }
+  #bare-project .bare-description { margin: 0; font-size: .8rem; line-height: 1.75; color: #a1a1aa; }
+  #bare-project .bare-description + .bare-description { margin-top: .7rem; }
+  #bare-project .bare-description strong { color: #d4d4d8; font-weight: 550; }
+  #bare-project .bare-subheading { margin: 1.4rem 0 .65rem; color: #d4d4d8; font-size: .8rem; font-weight: 600; }
+  #bare-project .bare-key { display: flex; flex-wrap: wrap; gap: .35rem 1rem; color: #71717a; font-size: .7rem; line-height: 1.5; margin: 0 0 1rem; }
+  #bare-project .bare-key-current { color: #d4d4d8; }
+  #bare-project .bare-key-planned { color: #85858d; }
+  #bare-project .bare-tech-grid { display: grid; grid-template-columns: 1fr; gap: 1.1rem; }
+  #bare-project .bare-tech-group { min-width: 0; }
+  #bare-project .bare-category { margin: 0 0 .35rem; font-size: .73rem; line-height: 1.4; color: #a1a1aa; font-weight: 600; }
+  #bare-project .bare-tech-list { display: flex; flex-wrap: wrap; gap: .12rem .2rem; line-height: 1.8; }
+  #bare-project .bare-tech { font-size: .75rem; white-space: nowrap; }
+  #bare-project .bare-tech:not(:last-child)::after { content: ' / '; white-space: pre; color: #52525b; }
+  #bare-project .bare-tech.current { color: #d4d4d8; }
+  #bare-project .bare-tech.planned { color: #85858d; }
+  #bare-project .bare-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.4rem; padding-top: .95rem; border-top: 1px solid rgba(255,255,255,.08); }
+  #bare-project .bare-bottom-note { color: #71717a; font-size: .7rem; line-height: 1.5; }
+  #bare-project .bare-github { color: #d4d4d8; text-decoration: none; font-size: .77rem; font-weight: 550; white-space: nowrap; transition: color .2s ease; }
+  #bare-project .bare-github:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 420px) {
+    #bare-project .bare-toggle { padding: .85rem; }
+    #bare-project .bare-body { margin: 0 .85rem 1rem; }
+    #bare-project .bare-bottom { flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bare-project .bare-card, #bare-project .bare-chevron, #bare-project .bare-panel, #bare-project .bare-github { transition: none !important; }
+  }
+</style>
+<!-- bare project styles: end -->
+</head>
 
   <body
     class="min-h-screen bg-black/70 bg-[url('/background.png')] bg-cover bg-center bg-no-repeat bg-blend-multiply font-bricolage"
@@ -442,59 +490,95 @@
         </div>
 </section>
 
-      <!-- Bare project: begin -->
-      <section id="projects" class="mt-10">
-        <h2 class="mb-4 text-sm font-medium text-zinc-500">projects</h2>
-
-        <details id="bare-project" class="group overflow-hidden rounded-lg border border-white/10 bg-[#181818] text-zinc-100 shadow-lg transition-colors duration-200 hover:border-white/20">
-          <summary class="flex cursor-pointer list-none items-center gap-3 p-4 outline-none transition-colors hover:bg-white/[0.025] focus-visible:bg-white/[0.05] [&::-webkit-details-marker]:hidden">
-            <div class="flex size-14 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-[#242424] font-mono text-xl font-semibold tracking-tighter text-zinc-200" aria-hidden="true">b<span class="text-zinc-500">.</span></div>
-
-            <div class="min-w-0 flex-1">
-              <div class="flex flex-wrap items-center gap-2">
-                <h3 class="text-sm font-semibold text-zinc-100">bare</h3>
-                <span class="rounded-md border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-medium text-zinc-400">in development</span>
-              </div>
-              <p class="mt-1 text-xs leading-5 text-zinc-500">local-first ai coding harness</p>
-            </div>
-
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 shrink-0 text-zinc-500 transition-transform duration-200 group-open:rotate-180">
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </summary>
-
-          <div class="border-t border-white/10 px-4 pb-4 pt-4">
-            <p class="text-xs leading-6 text-zinc-400">
-              a lightweight terminal coding agent built around local and openai-compatible models. bare is being developed to make long-running agent workflows more dependable, with better task continuity, recovery, and verification.
-            </p>
-
-            <p class="mt-4 text-[11px] font-medium tracking-wide text-zinc-500">tech stack</p>
-            <div class="mt-2 flex flex-wrap gap-2">
-              <span class="rounded-md border border-white/10 bg-white/[0.035] px-2 py-1 text-[11px] text-zinc-400">typescript</span>
-              <span class="rounded-md border border-white/10 bg-white/[0.035] px-2 py-1 text-[11px] text-zinc-400">react</span>
-              <span class="rounded-md border border-white/10 bg-white/[0.035] px-2 py-1 text-[11px] text-zinc-400">ink</span>
-              <span class="rounded-md border border-white/10 bg-white/[0.035] px-2 py-1 text-[11px] text-zinc-400">node.js</span>
-              <span class="rounded-md border border-white/10 bg-white/[0.035] px-2 py-1 text-[11px] text-zinc-400">sharp</span>
-            </div>
-
-            <p class="mt-3 text-[11px] leading-5 text-zinc-500">
-              planned: persistent task state, loop recovery, safer file edits, verification, and the experimental bear inference engine.
-            </p>
-
-            <a href="https://github.com/calebcat300-gif/bare" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-md border border-white/10 bg-[#242424] px-3 py-2 text-xs font-medium text-zinc-200 transition-colors hover:border-white/20 hover:bg-[#303030] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-400">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="size-4">
-                <path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.11.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.64-1.25-1.64-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.66 1.23 3.3.94.1-.73.39-1.23.71-1.51-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.09 1.15a10.75 10.75 0 0 1 5.62 0c2.14-1.45 3.08-1.15 3.08-1.15.62 1.55.24 2.7.12 2.98.73.79 1.16 1.79 1.16 3.02 0 4.32-2.64 5.27-5.15 5.55.4.35.76 1.04.76 2.1v3.11c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/>
-              </svg>
-              view on github
-              <span aria-hidden="true" class="text-zinc-500">↗</span>
-            </a>
+<!-- bare project: begin -->
+<section id="bare-project" aria-label="Bare project">
+  <h3 class="bare-heading">projects</h3>
+  <article class="bare-card" id="bare-project-card">
+    <button class="bare-toggle" type="button" id="bare-project-toggle" aria-expanded="false" aria-controls="bare-project-panel">
+      <span class="bare-header-copy">
+        <span class="bare-name">bare</span>
+        <span class="bare-subtitle">open-source, local-first ai coding harness</span>
+        <span class="bare-phase">in development</span>
+      </span>
+      <span class="bare-chevron" aria-hidden="true"></span>
+    </button>
+    <div class="bare-panel" id="bare-project-panel" aria-hidden="true" inert>
+      <div class="bare-panel-inner">
+        <div class="bare-body">
+          <p class="bare-description"><strong>bare</strong> is a terminal-first ai coding harness with an interactive ui, streaming responses, model reasoning, tool execution, file editing, and support for local and remote model apis.</p>
+          <p class="bare-description">its reliability-focused roadmap targets lost task context, repeated failures, conflicting edits, and unverified results. <strong>bear</strong> is the planned native inference engine focused on speed, memory efficiency, and hardware-level optimization.</p>
+          <h4 class="bare-subheading">technology stack</h4>
+          <div class="bare-key" aria-label="Technology status legend">
+            <span class="bare-key-current">current / integrated</span>
+            <span class="bare-key-planned">planned / research</span>
           </div>
-        </details>
-      </section>
-      <!-- Bare project: end -->
+          <div class="bare-tech-grid">
+          <div class="bare-tech-group">
+            <h5 class="bare-category">languages</h5>
+            <div class="bare-tech-list">
+              <span class="bare-tech current">TypeScript</span>
+              <span class="bare-tech current">JavaScript</span>
+              <span class="bare-tech planned">C++</span>
+              <span class="bare-tech planned">C</span>
+              <span class="bare-tech planned">Python</span>
+              <span class="bare-tech planned">Go</span>
+              <span class="bare-tech planned">SQL</span>
+              <span class="bare-tech current">Bash</span>
+              <span class="bare-tech planned">x86-64 Assembly</span>
+              <span class="bare-tech planned">PTX Assembly</span>
+              <span class="bare-tech planned">CUDA C++</span>
+              <span class="bare-tech planned">GLSL</span>
+              <span class="bare-tech planned">HIP</span>
+              <span class="bare-tech planned">Metal Shading Language (MSL)</span>
+            </div>
+          </div>
+          <div class="bare-tech-group">
+            <h5 class="bare-category">frameworks, libraries &amp; runtimes</h5>
+            <div class="bare-tech-list">
+              <span class="bare-tech current">React</span>
+              <span class="bare-tech current">Ink</span>
+              <span class="bare-tech current">Node.js</span>
+              <span class="bare-tech current">Sharp</span>
+              <span class="bare-tech current">ink-text-input</span>
+              <span class="bare-tech current">ink-use-mouse</span>
+              <span class="bare-tech planned">ggml</span>
+              <span class="bare-tech planned">llama.cpp</span>
+            </div>
+          </div>
+          <div class="bare-tech-group">
+            <h5 class="bare-category">gpu &amp; inference</h5>
+            <div class="bare-tech-list">
+              <span class="bare-tech planned">CUDA</span>
+              <span class="bare-tech planned">Vulkan</span>
+              <span class="bare-tech planned">Metal</span>
+              <span class="bare-tech planned">HIP</span>
+              <span class="bare-tech current">SGLang</span>
+              <span class="bare-tech current">Ollama</span>
+            </div>
+          </div>
+          <div class="bare-tech-group">
+            <h5 class="bare-category">data &amp; development tools</h5>
+            <div class="bare-tech-list">
+              <span class="bare-tech planned">SQLite</span>
+              <span class="bare-tech planned">CMake</span>
+              <span class="bare-tech current">OpenAI-compatible APIs</span>
+              <span class="bare-tech current">Git</span>
+            </div>
+          </div>
+          </div>
+          <div class="bare-bottom">
+            <span class="bare-bottom-note">bear inference engine · research phase</span>
+            <a class="bare-github" href="https://github.com/calebcat300-gif/bare" target="_blank" rel="noopener noreferrer">view on github</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+<!-- bare project: end -->
 
 
-      <!-- Divider -->
+<!-- Divider -->
       <hr class="my-8 border-0 border-t border-white/20" />
 
       <!-- GitHub -->
@@ -630,5 +714,22 @@ i believe privacy shouldn't require expensive hardware, and powerful ai shouldn'
 </main>
 
     <script type="module" src="/src/main.js"></script>
-  </body>
+  <!-- bare project interaction: begin -->
+<script id="bare-project-interaction">
+(() => {
+  const toggle = document.getElementById('bare-project-toggle');
+  const panel = document.getElementById('bare-project-panel');
+  const card = document.getElementById('bare-project-card');
+  if (!toggle || !panel || !card) return;
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    panel.setAttribute('aria-hidden', String(!open));
+    panel.inert = !open;
+    card.classList.toggle('is-open', open);
+  });
+})();
+</script>
+<!-- bare project interaction: end -->
+</body>
 </html>
