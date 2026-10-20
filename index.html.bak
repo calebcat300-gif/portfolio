@@ -2,9 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portfolio</title>
+    <title>endorphins.wiki</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap"
       rel="stylesheet"
     />
+      <link rel="icon" href="data:," />
   </head>
 
   <body
@@ -62,162 +62,122 @@
       <!-- Divider -->
       <hr class="my-8 border-0 border-t border-white/20" />
 
+      
       <!-- Languages & Software -->
       <section>
         <h2 class="text-sm font-medium text-zinc-500">
-          languages & software i know
+          technologies i've worked with
         </h2>
 
-        <!-- Programming & Web -->
-        <div class="mt-6">
-          <h3 class="mb-4 text-sm font-medium text-zinc-500">
-            programming & web
-          </h3>
-
+        <div class="mt-8">
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">programming languages</h3>
           <div class="flex flex-wrap items-center gap-5">
-            <!-- C++ -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg"
-                alt="C++"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >C++</span
-              >
-            </div>
-
-            <!-- JavaScript -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
-                alt="JavaScript"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >JavaScript</span
-              >
-            </div>
-
-            <!-- HTML5 -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg"
-                alt="HTML5"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >HTML5</span
-              >
-            </div>
-
-            <!-- CSS3 -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg"
-                alt="CSS3"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >CSS3</span
-              >
-            </div>
-
-            <!-- Tailwind -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
-                alt="Tailwind CSS"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >Tailwind CSS</span
-              >
-            </div>
-            <!-- Python -->
-<div class="group relative">
-  <img
-    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
-    alt="Python"
-    class="size-8 grayscale"
-  />
-  <span
-    class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-    >Python</span
-  >
-</div>
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="C++"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">C++</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" alt="C"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">C</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Python</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">JavaScript</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/lua/lua-original.svg" alt="Lua"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Lua</span>
+          </div>
+          <div class="group relative">
+            <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Bash_Logo_black_and_white_icon_only.svg" alt="Bash"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Bash</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/powershell/powershell-original.svg" alt="PowerShell"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">PowerShell</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/windows.svg" alt="Windows Batch"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Windows Batch</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/autohotkey.svg" alt="AutoHotkey"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">AutoHotkey</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg" alt="SQL"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">SQL</span>
+          </div>
           </div>
         </div>
-        <!-- Databases -->
-<div class="mt-8">
-  <h3 class="mb-4 text-sm font-medium text-zinc-500">
-    databases
-  </h3>
-
-  <div class="flex flex-wrap items-center gap-5">
-
-    <!-- SQL -->
-    <div class="group relative">
-      <img
-        src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azuresqldatabase/azuresqldatabase-original.svg"
-        alt="SQL"
-        class="size-8 grayscale"
-      />
-      <span
-        class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-        >SQL</span
-      >
-    </div>
-
-    <!-- SQLite -->
-    <div class="group relative">
-      <img
-      
-  src="https://cdn.jsdelivr.net/npm/simple-icons@v15/icons/sqlite.svg"
-  alt="SQLite"
-  class="size-8 invert"
-
-      />
-      <span
-        class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-        >SQLite</span
-      >
-    </div>
-
-    <!-- MongoDB -->
-    <div class="group relative">
-      <img
-        src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
-        alt="MongoDB"
-        class="size-8 grayscale"
-      />
-      <span
-        class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-        >MongoDB</span
-      >
-    </div>
-    <!-- PostgreSQL -->
-<div class="group relative">
-  <img
-    src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
-    alt="PostgreSQL"
-    class="size-8 grayscale"
-  />
-  <span
-    class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-    >PostgreSQL</span
-  >
-</div>
-
-  </div>
-</div>
-
-        <!-- Linux Distributions -->
+        <div class="mt-8">
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">web development</h3>
+          <div class="flex flex-wrap items-center gap-5">
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">HTML</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">CSS</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Tailwind CSS</span>
+          </div>
+          </div>
+        </div>
+        <div class="mt-8">
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">databases</h3>
+          <div class="flex flex-wrap items-center gap-5">
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/sqlite.svg" alt="SQLite"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">SQLite</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="PostgreSQL"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">PostgreSQL</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" alt="MongoDB"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">MongoDB</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">MySQL</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg" alt="Redis"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Redis</span>
+          </div>
+          </div>
+        </div>
+<!-- Linux Distributions -->
         <div class="mt-8">
           <h3 class="mb-4 text-sm font-medium text-zinc-500">
             linux distributions
@@ -254,7 +214,7 @@
             <div class="group relative">
               <img
                 src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/voidlinux.svg"
-                alt="Void Linux"
+                alt="Void Linux"km,,,,,,,,,,,,,,,,,,,,jkmj
                 class="size-8 object-contain invert"
               />
               <span
@@ -304,55 +264,87 @@
           </div>
         </div>
 
-        <!-- Local AI & Development -->
         <div class="mt-8">
-          <h3 class="mb-4 text-sm font-medium text-zinc-500">
-            local ai & development
-          </h3>
-
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">systems & development</h3>
           <div class="flex flex-wrap items-center gap-5">
-            <!-- Ollama -->
-            <div class="group relative">
-              <div
-                class="flex size-9 items-center justify-center rounded-md bg-white/60"
-              >
-                <img
-                  src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/ollama.svg"
-                  alt="Ollama"
-                  class="size-7 grayscale"
-                />
-              </div>
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >Ollama</span
-              >
-            </div>
-
-            <!-- Git -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"
-                alt="Git"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >Git</span
-              >
-            </div>
-
-            <!-- VS Code -->
-            <div class="group relative">
-              <img
-                src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg"
-                alt="Visual Studio Code"
-                class="size-8 grayscale"
-              />
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100"
-                >Visual Studio Code</span
-              >
-            </div>
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Docker</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nixos/nixos-original.svg" alt="Nix"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Nix</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Git</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cmake/cmake-original.svg" alt="CMake"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">CMake</span>
+          </div>
+          <div class="group relative">
+            <img src="https://raw.githubusercontent.com/NationalSecurityAgency/ghidra/master/GhidraDocs/images/GHIDRA_1.png" alt="Ghidra"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Ghidra</span>
+          </div>
+          <div class="group relative">
+            <img src="https://www.google.com/s2/favicons?domain=binary.ninja&sz=128" alt="Binary Ninja"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Binary Ninja</span>
+          </div>
+          </div>
+        </div>
+        <div class="mt-8">
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">local ai & machine learning</h3>
+          <div class="flex flex-wrap items-center gap-5">
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/ollama.svg" alt="Ollama"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Ollama</span>
+          </div>
+          <div class="group relative">
+            <img src="https://raw.githubusercontent.com/ggml-org/llama.brand/0708f2327336589bd4d3eba15a95199c318cd771/icon/icon-light.svg" alt="llama.cpp"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">llama.cpp</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/nvidia.svg" alt="CUDA"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">CUDA</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg" alt="PyTorch"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">PyTorch</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">TensorFlow</span>
+          </div>
+          </div>
+        </div>
+        <div class="mt-8">
+          <h3 class="mb-4 text-sm font-medium text-zinc-500">creative software</h3>
+          <div class="flex flex-wrap items-center gap-5">
+            
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/blender/blender-original.svg" alt="Blender"
+              class="size-8 object-contain grayscale" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Blender</span>
+          </div>
+          <div class="group relative">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/adobeaftereffects.svg" alt="Adobe After Effects"
+              class="size-8 object-contain grayscale invert" />
+            <span class="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md bg-[#181818] px-2 py-1 text-xs text-zinc-200 opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">Adobe After Effects</span>
+          </div>
           </div>
         </div>
       </section>
@@ -368,7 +360,7 @@
           href="https://github.com/calebcat300-gif"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-3 text-zinc-500 transition-opacity hover:opacity-60"
+          class="inline-flex items-center gap-3 mr-8 text-zinc-500 transition-opacity hover:opacity-60"
         >
           <img
             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
@@ -376,7 +368,37 @@
             class="size-6 grayscale"
           />
           <span class="text-sm font-medium">github</span>
-          <span class="text-xs text-zinc-500">↗</span>
+          
+        </a>
+      
+        <a
+          href="https://codeberg.org/endorphins"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 mr-8 text-zinc-500 transition-opacity hover:opacity-60"
+        >
+          <img
+            src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/codeberg.svg"
+            alt="codeberg"
+            class="size-6 invert grayscale"
+          />
+          <span class="text-sm font-medium">codeberg</span>
+          
+        </a>
+      
+        <a
+          href="https://huggingface.co/endorphinss"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-3 mr-8 text-zinc-500 transition-opacity hover:opacity-60"
+        >
+          <img
+            src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/f0f32c486dede7d548c2f02cb7efb62f655de595/hf-logo.svg?download=true"
+            alt="hugging face"
+            class="size-6 object-contain grayscale"
+          />
+          <span class="text-sm font-medium">hugging face</span>
+          
         </a>
       </section>
             </section>
@@ -429,7 +451,21 @@
             how information is exposed and protected online.
           </p>
 
+          <p>my interest in local ai started with the belief that artificial intelligence shouldn't be locked behind ridiculous subscription prices, geographical restrictions, censorship, or corporate control. access to powerful technology and information shouldn't depend on someone's financial situation, where they live, or what they're permitted to access.
+
+            i believe independent journalists, researchers, and everyday people should have access to tools that help them investigate, learn, question narratives, and explore information freely. technology should empower people to think independently rather than decide what they're allowed to know.
+
+            privacy is just as important to me. people should have control over their own data, conversations, research, and software without being forced to rely on centralized services or surrender sensitive information to third parties.
+
+            these beliefs are what pushed me toward open-weight models, local inference, llama.cpp, cuda optimization, and running language models on my own hardware. i'm interested in making ai more accessible, affordable, private, and independent.</p>
           <p>
+            <p>one of my long-term goals is to start a company focused on making powerful local ai accessible to everyone, regardless of their hardware or financial situation.
+
+i want to research ways to achieve the reasoning and intelligence of much larger models, such as 30b-parameter models, while operating within the computational and memory requirements of something closer to a 7b model. rather than relying solely on quantization, which can introduce quality loss, i'm especially interested in optimizing token processing, context management, inference i/o, and how information is delivered to and processed by language models.
+
+my goal is to preserve as much of the larger model's capabilities as possible while dramatically reducing hardware requirements, memory consumption, and inference costs.
+
+i believe privacy shouldn't require expensive hardware, and powerful ai shouldn't be reserved for people who can afford dedicated machines costing thousands of dollars. i want to help make private, locally hosted intelligence accessible to ordinary people, independent journalists, researchers, and developers without forcing them to depend on expensive cloud services.</p>
             nowadays, i spend most of my time learning and experimenting with
             programming, reverse engineering, low-level software development,
             and local artificial intelligence. i'm exploring c/c++, javascript,
