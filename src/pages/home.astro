@@ -4,6 +4,10 @@ import TechMosaic from "../components/TechMosaic.astro";
 ---
 
 
+<head>
+<title>endorphins.wiki</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
+</head>
 <!-- home-wipe-reveal -->
 <style is:global>
     html.entering-home::before {
@@ -388,7 +392,7 @@ import TechMosaic from "../components/TechMosaic.astro";
 
             ctx.imageSmoothingEnabled = true;
 
-            ctx.filter = "grayscale(1) brightness(1.65) contrast(1.1)";
+            ctx.filter = "none";
 
             ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
         };
@@ -946,3 +950,12 @@ function revealHomeFromEnter() {
 
 revealHomeFromEnter();
 </script>
+
+<style is:global>
+    /* mobile-cat-monochrome */
+    #terminal-output img,
+    #terminal-output canvas {
+        -webkit-filter: grayscale(1) brightness(1.65) contrast(1.1) !important;
+        filter: grayscale(1) brightness(1.65) contrast(1.1) !important;
+    }
+</style>
