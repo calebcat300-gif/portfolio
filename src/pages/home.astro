@@ -1,0 +1,948 @@
+---
+import "../styles/global.css";
+import TechMosaic from "../components/TechMosaic.astro";
+---
+
+
+<!-- home-wipe-reveal -->
+<style is:global>
+    html.entering-home::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 2147483646;
+        pointer-events: none;
+    }
+</style>
+
+<script is:inline>
+    if (sessionStorage.getItem("enter-wipe") === "1") {
+        document.documentElement.classList.add("entering-home");
+    }
+</script>
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600&display=swap"
+/>
+
+<main class="min-h-screen bg-black text-zinc-100 lowercase">
+    <div class="mx-auto max-w-6xl px-6 pt-10">
+        <header class="flex items-center gap-4">
+            <img
+                id="avatar"
+                alt="discord avatar"
+                class="size-14 shrink-0 rounded-full object-cover grayscale contrast-125 brightness-90"
+            />
+
+            <div class="min-w-0">
+                <h1
+                    id="display-name"
+                    class="pixel text-[30px] leading-none text-zinc-200"
+                >
+                    loading...
+                </h1>
+
+                <p
+                    id="username"
+                    class="pixel mt-1 text-[16px] text-zinc-500"
+                ></p>
+            </div>
+        </header>
+
+        <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
+            <section class="w-full max-w-[380px] rounded-lg border border-[#101010] bg-[#050505] px-3.5 py-3 lg:h-[104px] lg:w-[380px] lg:shrink-0">
+            <p class="pixel mb-2 text-[15px] leading-none text-zinc-500">
+                status
+            </p>
+
+            <div class="flex items-center gap-3">
+                <canvas
+                    id="activity-icon"
+                    width="24"
+                    height="24"
+                    class="size-12 shrink-0 rounded-md grayscale contrast-125 [image-rendering:pixelated]"
+                    hidden
+                ></canvas>
+
+                <div class="min-w-0">
+                    <h2
+                        id="activity-name"
+                        class="pixel text-[20px] leading-tight text-zinc-200"
+                    ></h2>
+
+                    <p
+                        id="activity-details"
+                        class="mt-0.5 truncate font-mono text-[11px] text-zinc-400"
+                    ></p>
+
+                    <p
+                        id="activity-state"
+                        class="mt-0.5 truncate font-mono text-[11px] text-zinc-600"
+                    ></p>
+                </div>
+            </div>
+        </section>
+            <TechMosaic />
+        </div>
+
+        <!-- terminal -->
+        <div class="mt-10 max-w-3xl pb-16 font-mono text-[13px]">
+            <hr class="mb-5 border-[#151515]" />
+
+            <p class="mb-5 text-zinc-500">
+                type 'help' to see available commands.
+            </p>
+
+            <div
+                id="terminal-output"
+                class="mb-3 space-y-3 text-zinc-300"
+                aria-live="polite"
+            ></div>
+
+            <!-- dolphin -->
+            <div
+                id="dolphin-tui"
+                tabindex="0"
+                hidden
+                class="mb-5 mt-4 outline-none"
+            >
+                <div class="flex items-center justify-between gap-3 border-b border-[#202020] pb-3">
+                    <span id="dolphin-path" class="break-all text-zinc-300">
+                        ~
+                    </span>
+
+                    <span class="shrink-0 text-zinc-600">dolphin</span>
+                </div>
+
+                <div class="grid min-h-[220px] grid-cols-1 gap-5 py-4 sm:grid-cols-[220px_minmax(0,1fr)]">
+                    <div id="dolphin-items" class="min-w-0 space-y-1"></div>
+
+                    <div class="min-w-0 border-t border-[#1c1c1c] pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
+                        <p
+                            id="dolphin-preview-title"
+                            class="mb-3 break-all text-zinc-300"
+                        ></p>
+
+                        <pre
+                            id="dolphin-preview"
+                            class="max-h-[350px] overflow-auto whitespace-pre-wrap break-words text-xs leading-relaxed text-zinc-500"
+                        ></pre>
+                    </div>
+                </div>
+
+                <p class="border-t border-[#202020] pt-3 text-xs text-zinc-600">
+                    up/down navigate - enter open - backspace parent - q exit
+                </p>
+            </div>
+
+            <form id="terminal-form" class="flex items-center gap-2">
+                <span class="shrink-0 text-zinc-400">endorphins@home:~$</span>
+
+                <input
+                    id="command-input"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    aria-label="terminal command"
+                    class="min-w-0 flex-1 border-none bg-transparent text-zinc-100 outline-none"
+                />
+            </form>
+        </div>
+    </div>
+</main>
+
+<style is:global>
+    .pixel {
+        font-family: "Pixelify Sans", monospace;
+        font-weight: 400;
+    }
+
+    #dolphin-tui[hidden] {
+        display: none !important;
+    }
+</style>
+
+<script>
+    import { filesystem, type FSNode } from "../lib/filesystem";
+
+    const RPC_URL = "https://rpc.fmod.dev/v1/users/1439728287608999956";
+
+    const CAT_URL =
+        "https://cdn.discordapp.com/attachments/1441303929865633857/1567049047896756254/IMG_6630.jpg?ex=6aeac3a7&is=6ae97227&hm=3c754ebb9faefb3d7c7a5446e1bbe8ac498b15bfd9b054665a8fcb46eabec516";
+
+    // discord rpc
+
+    function getActivityImage(activity: any) {
+        const image = activity?.assets?.large_image;
+
+        if (!image) return null;
+
+        if (image.startsWith("mp:")) {
+            return `https://media.discordapp.net/${image.slice(3)}`;
+        }
+
+        if (image.startsWith("https://")) {
+            return image;
+        }
+
+        if (activity.application_id) {
+            return `https://cdn.discordapp.com/app-assets/${activity.application_id}/${image}.png`;
+        }
+
+        return null;
+    }
+
+    async function loadActivityImage(url: string | null) {
+        const canvas =
+            document.querySelector<HTMLCanvasElement>("#activity-icon");
+
+        if (!canvas) return;
+
+        canvas.hidden = true;
+        if (!url) return;
+
+        const image = new Image();
+        image.src = url;
+
+        try {
+            await image.decode();
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.imageSmoothingEnabled = true;
+
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+            canvas.hidden = false;
+        } catch (error) {
+            console.error("activity image failed:", error);
+        }
+    }
+
+    async function loadPresence() {
+        try {
+            const response = await fetch(RPC_URL, {
+                cache: "no-store",
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            const user = data.discord_user;
+
+            const avatar = document.querySelector<HTMLImageElement>("#avatar");
+
+            const displayName = document.querySelector("#display-name");
+
+            const username = document.querySelector("#username");
+
+            if (avatar && user.avatar) {
+                avatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+            }
+
+            if (displayName) {
+                displayName.textContent = user.global_name || user.username;
+            }
+
+            if (username) {
+                username.textContent = `@${user.username}`;
+            }
+
+            const activity = data.activities?.find(
+                (item: { type: number }) => item.type === 0,
+            );
+
+            const activityName = document.querySelector("#activity-name");
+
+            const activityDetails = document.querySelector("#activity-details");
+
+            const activityState = document.querySelector("#activity-state");
+
+            if (activityName) {
+                activityName.textContent = activity?.name ?? "no activity";
+            }
+
+            if (activityDetails) {
+                activityDetails.textContent = activity?.details ?? "";
+            }
+
+            if (activityState) {
+                activityState.textContent = activity?.state ?? "";
+            }
+
+            await loadActivityImage(getActivityImage(activity));
+        } catch (error) {
+            console.error("fmod rpc failed:", error);
+        }
+    }
+
+    loadPresence();
+    setInterval(loadPresence, 20000);
+
+    // terminal
+
+    const form = document.querySelector<HTMLFormElement>("#terminal-form");
+
+    const input = document.querySelector<HTMLInputElement>("#command-input");
+
+    const output = document.querySelector<HTMLDivElement>("#terminal-output");
+
+    const prompt = document.querySelector<HTMLSpanElement>(
+        "#terminal-form span",
+    );
+
+    let cwd: string[] = [];
+
+    const history: string[] = [];
+    let historyIndex = 0;
+
+    function currentPath() {
+        return "~" + (cwd.length ? "/" + cwd.join("/") : "");
+    }
+
+    function getNode(parts: string[]): FSNode | null {
+        let node: FSNode = filesystem;
+
+        for (const part of parts) {
+            if (node.type !== "directory") return null;
+
+            const next = node.children[part];
+            if (!next) return null;
+
+            node = next;
+        }
+
+        return node;
+    }
+
+    function resolvePath(path: string) {
+        const parts =
+            path.startsWith("/") || path.startsWith("~") ? [] : [...cwd];
+
+        const clean = path.startsWith("~") ? path.slice(1) : path;
+
+        for (const part of clean.split("/")) {
+            if (!part || part === ".") continue;
+
+            if (part === "..") {
+                parts.pop();
+            } else {
+                parts.push(part);
+            }
+        }
+
+        const node = getNode(parts);
+
+        return node ? { node, parts } : null;
+    }
+
+    function write(text: string, muted = false) {
+        if (!output) return;
+
+        const line = document.createElement("pre");
+
+        line.className =
+            "whitespace-pre-wrap break-words " +
+            (muted ? "text-zinc-600" : "text-zinc-300");
+
+        line.textContent = text;
+        output.appendChild(line);
+    }
+
+    function updatePrompt() {
+        if (prompt) {
+            prompt.textContent = `endorphins@home:${currentPath()}$`;
+        }
+    }
+
+    // cat mosaic
+
+    function showCat() {
+        if (!output) return;
+
+        const canvas = document.createElement("canvas");
+
+        canvas.className =
+            "mt-3 block w-[320px] max-w-full h-auto " +
+            "[image-rendering:pixelated]";
+
+        const image = new Image();
+
+        image.onload = () => {
+            const pixels = 64;
+
+            canvas.width = pixels;
+            canvas.height = Math.max(
+                1,
+                Math.round(pixels * (image.naturalHeight / image.naturalWidth)),
+            );
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            ctx.imageSmoothingEnabled = true;
+
+            ctx.filter = "grayscale(1) brightness(1.65) contrast(1.1)";
+
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        };
+
+        image.onerror = () => {
+            canvas.remove();
+            write("couldn't load cat image.");
+        };
+
+        image.src = CAT_URL;
+
+        output.appendChild(canvas);
+    }
+
+    // dolphin
+
+    const dolphin = document.querySelector<HTMLDivElement>("#dolphin-tui");
+
+    const dolphinPath = document.querySelector<HTMLElement>("#dolphin-path");
+
+    const dolphinItems =
+        document.querySelector<HTMLDivElement>("#dolphin-items");
+
+    const dolphinPreviewTitle = document.querySelector<HTMLElement>(
+        "#dolphin-preview-title",
+    );
+
+    const dolphinPreview =
+        document.querySelector<HTMLElement>("#dolphin-preview");
+
+    type Entry = {
+        name: string;
+        node: FSNode;
+        parent?: boolean;
+    };
+
+    let dolphinDirectory: string[] = [];
+    let dolphinSelected = 0;
+    let dolphinEntries: Entry[] = [];
+
+    function renderDolphin() {
+        if (
+            !dolphinPath ||
+            !dolphinItems ||
+            !dolphinPreviewTitle ||
+            !dolphinPreview
+        )
+            return;
+
+        const directory = getNode(dolphinDirectory);
+
+        if (!directory || directory.type !== "directory") {
+            return;
+        }
+
+        dolphinPath.textContent =
+            "~" +
+            (dolphinDirectory.length ? "/" + dolphinDirectory.join("/") : "");
+
+        dolphinItems.replaceChildren();
+
+        dolphinEntries = Object.entries(directory.children)
+            .map(([name, node]) => ({ name, node }))
+            .sort(
+                (a, b) =>
+                    Number(b.node.type === "directory") -
+                        Number(a.node.type === "directory") ||
+                    a.name.localeCompare(b.name),
+            );
+
+        if (dolphinDirectory.length > 0) {
+            dolphinEntries.unshift({
+                name: "..",
+                node: filesystem,
+                parent: true,
+            });
+        }
+
+        dolphinSelected = Math.min(
+            Math.max(dolphinSelected, 0),
+            Math.max(dolphinEntries.length - 1, 0),
+        );
+
+        dolphinEntries.forEach((entry, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+
+            const selected = index === dolphinSelected;
+
+            button.className =
+                "block w-full cursor-pointer border-0 " +
+                "bg-transparent text-left outline-none";
+
+            const text = document.createElement("span");
+
+            const suffix =
+                !entry.parent && entry.node.type === "directory" ? "/" : "";
+
+            text.textContent = `${entry.name}${suffix}`;
+
+            text.className = selected
+                ? "text-zinc-100 underline decoration-zinc-500 underline-offset-4"
+                : "text-zinc-600 hover:text-zinc-300";
+
+            button.setAttribute("aria-current", selected ? "true" : "false");
+
+            button.appendChild(text);
+
+            button.addEventListener("click", () => {
+                dolphinSelected = index;
+
+                if (
+                    entry.parent ||
+                    entry.node.type === "directory" ||
+                    entry.node.type === "link"
+                ) {
+                    activateDolphinEntry();
+                } else {
+                    renderDolphin();
+                }
+
+                dolphin?.focus();
+            });
+
+            dolphinItems.appendChild(button);
+        });
+
+        const selectedEntry = dolphinEntries[dolphinSelected];
+
+        if (!selectedEntry) {
+            dolphinPreviewTitle.textContent = "empty directory";
+            dolphinPreview.textContent = "";
+            return;
+        }
+
+        dolphinPreviewTitle.textContent = selectedEntry.name;
+
+        if (selectedEntry.parent) {
+            dolphinPreview.textContent =
+                "parent directory\n\npress enter to go back.";
+        } else if (selectedEntry.node.type === "directory") {
+            const names = Object.keys(selectedEntry.node.children);
+
+            dolphinPreview.textContent =
+                `directory\n${names.length} items\n\n` +
+                names.join("\n") +
+                "\n\npress enter to open.";
+        } else if (selectedEntry.node.type === "file") {
+            dolphinPreview.textContent = selectedEntry.node.content;
+        } else {
+            dolphinPreview.textContent =
+                `external link\n\n${selectedEntry.node.url}\n\n` +
+                "press enter to open in a new tab.";
+        }
+    }
+
+    function navigateDolphin(parts: string[]) {
+        const node = getNode(parts);
+
+        if (!node || node.type !== "directory") return;
+
+        dolphinDirectory = [...parts];
+        dolphinSelected = 0;
+
+        cwd = [...parts];
+        updatePrompt();
+
+        renderDolphin();
+    }
+
+    function activateDolphinEntry() {
+        const entry = dolphinEntries[dolphinSelected];
+        if (!entry) return;
+
+        if (entry.parent) {
+            navigateDolphin(dolphinDirectory.slice(0, -1));
+            return;
+        }
+
+        if (entry.node.type === "directory") {
+            navigateDolphin([...dolphinDirectory, entry.name]);
+            return;
+        }
+
+        if (entry.node.type === "link") {
+            window.open(entry.node.url, "_blank", "noopener,noreferrer");
+            return;
+        }
+
+        renderDolphin();
+    }
+
+    function openDolphin() {
+        if (!dolphin) return;
+
+        dolphinDirectory = [...cwd];
+        dolphinSelected = 0;
+
+        dolphin.hidden = false;
+
+        if (form) {
+            form.style.display = "none";
+        }
+
+        renderDolphin();
+        dolphin.focus();
+    }
+
+    function closeDolphin() {
+        if (!dolphin) return;
+
+        dolphin.hidden = true;
+
+        if (form) {
+            form.style.display = "";
+        }
+
+        input?.focus();
+    }
+
+    document.addEventListener("keydown", (event) => {
+        if (!dolphin || dolphin.hidden) return;
+
+        if (event.ctrlKey || event.metaKey || event.altKey) {
+            return;
+        }
+
+        switch (event.key) {
+            case "ArrowDown":
+                event.preventDefault();
+
+                dolphinSelected = Math.min(
+                    dolphinSelected + 1,
+                    dolphinEntries.length - 1,
+                );
+
+                renderDolphin();
+                break;
+
+            case "ArrowUp":
+                event.preventDefault();
+
+                dolphinSelected = Math.max(dolphinSelected - 1, 0);
+
+                renderDolphin();
+                break;
+
+            case "Enter":
+            case "ArrowRight":
+                event.preventDefault();
+                activateDolphinEntry();
+                break;
+
+            case "Backspace":
+            case "ArrowLeft":
+                event.preventDefault();
+
+                navigateDolphin(dolphinDirectory.slice(0, -1));
+                break;
+
+            case "Escape":
+            case "q":
+                event.preventDefault();
+                closeDolphin();
+                break;
+        }
+    });
+
+    // terminal commands
+
+    function runCommand(commandLine: string) {
+        const [rawCommand, ...args] = commandLine.trim().split(/\s+/);
+
+        const command = rawCommand.toLowerCase();
+        const path = args[0];
+
+        switch (command) {
+            case "help":
+                write(
+                    "available commands:\n\n" +
+                        "help       show commands\n" +
+                        "ls         list files\n" +
+                        "cd         change directory\n" +
+                        "pwd        current directory\n" +
+                        "cat        show my cat / read a file\n" +
+                        "about-me   about me\n" +
+                        "projects   list projects\n" +
+                        "stack      technologies\n" +
+                        "contact    contact information\n" +
+                        "whoami     current user\n" +
+                        "open       open a .url shortcut\n" +
+                        "dolphin    terminal file browser\n" +
+                        "history    previous commands\n" +
+                        "clear      clear terminal",
+                );
+                break;
+
+            case "pwd":
+                write(currentPath());
+                break;
+
+            case "whoami":
+                write("endorphins");
+                break;
+
+            case "ls": {
+                const target = resolvePath(path ?? ".");
+
+                if (!target) {
+                    write(`ls: ${path}: no such file or directory`);
+                    break;
+                }
+
+                if (target.node.type !== "directory") {
+                    write(path ?? ".");
+                    break;
+                }
+
+                const names = Object.entries(target.node.children).map(
+                    ([name, node]) =>
+                        node.type === "directory" ? name + "/" : name,
+                );
+
+                write(names.join("    ") || "(empty)");
+                break;
+            }
+
+            case "cd": {
+                const target = resolvePath(path ?? "~");
+
+                if (!target) {
+                    write(`cd: ${path}: no such directory`);
+                    break;
+                }
+
+                if (target.node.type !== "directory") {
+                    write(`cd: ${path}: not a directory`);
+                    break;
+                }
+
+                cwd = target.parts;
+                updatePrompt();
+                break;
+            }
+
+            case "cat": {
+                if (!path) {
+                    showCat();
+                    break;
+                }
+
+                const target = resolvePath(path);
+
+                if (!target) {
+                    write(`cat: ${path}: no such file`);
+                } else if (target.node.type === "file") {
+                    write(target.node.content);
+                } else if (target.node.type === "link") {
+                    write(target.node.url);
+                } else {
+                    write(`cat: ${path}: is a directory`);
+                }
+
+                break;
+            }
+
+            case "about-me":
+            case "stack":
+            case "contact": {
+                const target = resolvePath(`~/${command}/readme.md`);
+
+                if (target?.node.type === "file") {
+                    write(target.node.content);
+                }
+
+                break;
+            }
+
+            case "projects": {
+                const target = resolvePath("~/projects");
+
+                if (target?.node.type === "directory") {
+                    const projects = Object.entries(target.node.children)
+                        .filter(([, node]) => node.type === "directory")
+                        .map(([name]) => name + "/");
+
+                    write(projects.join("    "));
+                }
+
+                break;
+            }
+
+            case "open": {
+                if (!path) {
+                    write("usage: open <file.url>");
+                    break;
+                }
+
+                const target = resolvePath(path);
+
+                if (target?.node.type === "link") {
+                    window.open(
+                        target.node.url,
+                        "_blank",
+                        "noopener,noreferrer",
+                    );
+
+                    write(`opening ${path}...`, true);
+                } else {
+                    write("open: not a valid .url shortcut");
+                }
+
+                break;
+            }
+
+            case "dolphin":
+                openDolphin();
+                break;
+
+            case "history":
+                write(
+                    history
+                        .map((item, index) => `${index + 1}  ${item}`)
+                        .join("\n"),
+                );
+                break;
+
+            case "clear":
+                output?.replaceChildren();
+                break;
+
+            default:
+                write(`${command}: command not found`);
+                write("type 'help' for available commands.", true);
+        }
+    }
+
+    // submit commands
+
+    form?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!input) return;
+
+        const command = input.value.trim();
+        if (!command) return;
+
+        history.push(command);
+        historyIndex = history.length;
+
+        write(
+            `${prompt?.textContent ?? "endorphins@home:~$"} ${command}`,
+            true,
+        );
+
+        input.value = "";
+
+        runCommand(command);
+
+        if (!dolphin || dolphin.hidden) {
+            input.focus();
+        }
+    });
+
+    // command history
+
+    input?.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+
+            historyIndex = Math.max(0, historyIndex - 1);
+
+            input.value = history[historyIndex] ?? "";
+        }
+
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+
+            historyIndex = Math.min(history.length, historyIndex + 1);
+
+            input.value = history[historyIndex] ?? "";
+        }
+    });
+
+    updatePrompt();
+
+// home-wipe-reveal-animation
+function revealHomeFromEnter() {
+    if (sessionStorage.getItem("enter-wipe") !== "1") return;
+
+    sessionStorage.removeItem("enter-wipe");
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 96;
+    canvas.height = 54;
+
+    canvas.style.cssText = `
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2147483647;
+        image-rendering: pixelated;
+        pointer-events: none;
+    `;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+        document.documentElement.classList.remove("entering-home");
+        return;
+    }
+
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, w, h);
+
+    document.body.appendChild(canvas);
+    document.documentElement.classList.remove("entering-home");
+
+    const offsets = Array.from(
+        { length: w },
+        () => Math.floor(Math.random() * 7) - 3
+    );
+
+    const start = performance.now();
+    const duration = 600;
+
+    function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const frontier = progress * (h + 12) - 6;
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "#000";
+
+        for (let x = 0; x < w; x++) {
+            const edge = Math.max(
+                0,
+                Math.min(h, Math.floor(frontier + offsets[x]))
+            );
+
+            ctx.fillRect(x, edge, 1, h - edge);
+        }
+
+        if (progress < 1) {
+            requestAnimationFrame(frame);
+        } else {
+            canvas.remove();
+        }
+    }
+
+    requestAnimationFrame(frame);
+}
+
+revealHomeFromEnter();
+</script>

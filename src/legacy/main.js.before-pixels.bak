@@ -1,0 +1,43 @@
+
+import "./style.css";
+
+
+const boot = document.querySelector("#boot");
+const identity = document.querySelector("#identity");
+const bootText = document.querySelector("#boot-text");
+const nameArt = document.querySelector("#name-art");
+
+const lines = [
+"ENDORPHINS",
+"Initializing display...",
+"Loading interface...",
+"Ready.",
+"",
+"C> endorphins",
+];
+
+const sleep = (ms) =>
+new Promise((resolve) => setTimeout(resolve, ms));
+
+async function start() {
+const response = await fetch("/name.txt");
+if (!response.ok) throw new Error("ASCII art could not be loaded");
+
+nameArt.textContent = await response.text();
+
+for (const line of lines) {
+bootText.textContent += line + "\n";
+await sleep(380);
+}
+
+await sleep(650);
+
+boot.classList.add("leaving");
+await sleep(400);
+
+boot.hidden = true;
+identity.hidden = false;
+identity.classList.add("visible");
+}
+
+start().catch(console.error);

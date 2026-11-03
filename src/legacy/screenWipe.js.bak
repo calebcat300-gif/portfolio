@@ -1,0 +1,109 @@
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+function noise(x, y, frame) {
+  const value = Math.sin(
+    x * 127.1 + y * 311.7 + frame * 74.7
+  ) * 43758.5453;
+
+  return value - Math.floor(value);
+}
+
+export async function screenWipe(swap = null) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    swap?.();
+    return;
+  }
+
+  const canvas = document.createElement("canvas");
+  const pixelSize = 14;
+
+  canvas.width = Math.ceil(window.innerWidth / pixelSize);
+  canvas.height = Math.ceil(window.innerHeight / pixelSize);
+
+  Object.assign(canvas.style, {
+    position: "fixed",
+    inset: "0",
+    width: "100vw",
+    height: "100vh",
+    zIndex: "9999",
+    pointerEvents: "none",
+    imageRendering: "pixelated",
+  });
+
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    swap?.();
+    canvas.remove();
+    return;
+  }
+
+  const width = canvas.width;
+  const height = canvas.height;
+  const frames = 12;
+
+  function draw(mode, progress, frame) {
+    ctx.clearRect(0, 0, width, height);
+
+    const frontier = progress * (height + 8) - 4;
+
+    for (let x = 0; x < width; x++) {
+      const jitter = (noise(x, 0, frame) - 0.5) * 5;
+      const edge = frontier + jitter;
+
+      for (let y = 0; y < height; y++) {
+        const value = noise(x, y, frame);
+        const nearEdge = Math.abs(y - edge) < 5;
+
+        if (mode === "startup") {
+          if (y >= edge) {
+            ctx.fillStyle =
+              value > 0.93 ? "#eeeeee" :
+              value > 0.78 ? "#777777" :
+              value > 0.58 ? "#292929" : "#050505";
+
+            ctx.fillRect(x, y, 1, 1);
+          }
+          continue;
+        }
+
+        const covered =
+          mode === "close" ? y <= edge : y >= edge;
+
+        if (covered) {
+          ctx.fillStyle = "#050505";
+          ctx.fillRect(x, y, 1, 1);
+        }
+
+        if (nearEdge && value > 0.55) {
+          ctx.fillStyle =
+            value > 0.92 ? "#eeeeee" :
+            value > 0.75 ? "#888888" : "#333333";
+
+          ctx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+  }
+
+  async function play(mode) {
+    for (let frame = 0; frame <= frames; frame++) {
+      draw(mode, frame / frames, frame);
+      await sleep(80);
+    }
+  }
+
+  try {
+    if (swap) {
+      await play("close");
+      swap();
+      await play("open");
+    } else {
+      await play("startup");
+    }
+  } finally {
+    canvas.remove();
+  }
+}

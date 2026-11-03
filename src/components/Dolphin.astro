@@ -1,0 +1,257 @@
+<div
+    id="dolphin-overlay"
+    class="fixed inset-0 z-50 flex items-start justify-center bg-black/75 px-4 pt-[8vh] backdrop-blur-[2px]"
+    hidden
+>
+    <section
+        role="dialog"
+        aria-modal="true"
+        aria-label="dolphin file browser"
+        class="w-full max-w-2xl overflow-hidden rounded-xl border border-[#202020] bg-[#080808] shadow-[0_24px_80px_#000]"
+    >
+        <header class="flex items-center justify-between border-b border-[#191919] px-4 py-3">
+            <span class="pixel text-[20px] text-zinc-200">dolphin</span>
+
+            <button
+                id="dolphin-close"
+                type="button"
+                aria-label="close dolphin"
+                class="font-mono text-lg text-zinc-500 hover:text-white"
+            >
+                ×
+            </button>
+        </header>
+
+        <nav class="flex items-center gap-3 border-b border-[#151515] px-4 py-3 font-mono text-xs">
+            <button
+                id="dolphin-back"
+                type="button"
+                aria-label="parent directory"
+                class="text-zinc-400 hover:text-white disabled:opacity-30"
+            >
+                ←
+            </button>
+
+            <button
+                id="dolphin-home"
+                type="button"
+                class="text-zinc-400 hover:text-white"
+            >
+                ~
+            </button>
+
+            <span id="dolphin-path" class="truncate text-zinc-600">
+                ~
+            </span>
+        </nav>
+
+        <div
+            id="dolphin-files"
+            class="grid min-h-48 grid-cols-2 content-start gap-2 p-4 sm:grid-cols-3"
+        ></div>
+
+        <section
+            id="dolphin-preview"
+            class="border-t border-[#1b1b1b] bg-[#060606]"
+            hidden
+        >
+            <div class="flex items-center justify-between border-b border-[#171717] px-4 py-3">
+                <span
+                    id="dolphin-preview-name"
+                    class="font-mono text-xs text-zinc-300"
+                ></span>
+
+                <button
+                    id="dolphin-preview-close"
+                    type="button"
+                    aria-label="close file preview"
+                    class="text-zinc-500 hover:text-white"
+                >
+                    ×
+                </button>
+            </div>
+
+            <pre
+                id="dolphin-preview-body"
+                class="max-h-64 overflow-auto whitespace-pre-wrap break-words p-4 font-mono text-xs leading-relaxed text-zinc-400"
+            ></pre>
+        </section>
+    </section>
+</div>
+
+<style>
+    #dolphin-overlay[hidden],
+    #dolphin-preview[hidden] {
+        display: none !important;
+    }
+</style>
+
+<script>
+    import { filesystem, type FSNode } from "../lib/filesystem";
+
+    const overlay = document.querySelector<HTMLElement>("#dolphin-overlay");
+    const files = document.querySelector<HTMLElement>("#dolphin-files");
+    const pathLabel = document.querySelector<HTMLElement>("#dolphin-path");
+    const back = document.querySelector<HTMLButtonElement>("#dolphin-back");
+    const home = document.querySelector<HTMLButtonElement>("#dolphin-home");
+    const close = document.querySelector<HTMLButtonElement>("#dolphin-close");
+
+    const preview = document.querySelector<HTMLElement>("#dolphin-preview");
+    const previewName = document.querySelector<HTMLElement>(
+        "#dolphin-preview-name",
+    );
+    const previewBody = document.querySelector<HTMLElement>(
+        "#dolphin-preview-body",
+    );
+    const previewClose = document.querySelector<HTMLButtonElement>(
+        "#dolphin-preview-close",
+    );
+
+    let currentParts: string[] = [];
+
+    function getNode(parts: string[]): FSNode | null {
+        let node: FSNode = filesystem;
+
+        for (const part of parts) {
+            if (node.type !== "directory") return null;
+
+            const next = node.children[part];
+            if (!next) return null;
+
+            node = next;
+        }
+
+        return node;
+    }
+
+    function syncTerminal() {
+        window.dispatchEvent(
+            new CustomEvent("portfolio:cwd", {
+                detail: { path: [...currentParts] },
+            }),
+        );
+    }
+
+    function navigate(parts: string[]) {
+        const node = getNode(parts);
+        if (!node || node.type !== "directory") return;
+
+        currentParts = parts;
+        syncTerminal();
+        renderFiles();
+    }
+
+    function renderFiles() {
+        if (!files || !pathLabel || !back || !preview) return;
+
+        const directory = getNode(currentParts);
+        if (!directory || directory.type !== "directory") return;
+
+        pathLabel.textContent =
+            "~" + (currentParts.length ? "/" + currentParts.join("/") : "");
+
+        back.disabled = currentParts.length === 0;
+        preview.hidden = true;
+        files.replaceChildren();
+
+        const entries = Object.entries(directory.children).sort(
+            ([nameA, nodeA], [nameB, nodeB]) =>
+                Number(nodeB.type === "directory") -
+                    Number(nodeA.type === "directory") ||
+                nameA.localeCompare(nameB),
+        );
+
+        if (entries.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "font-mono text-xs text-zinc-600";
+            empty.textContent = "empty directory";
+            files.appendChild(empty);
+        }
+
+        for (const [name, node] of entries) {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className =
+                "flex min-w-0 items-center gap-3 rounded-md " +
+                "border border-[#191919] bg-[#0c0c0c] px-3 py-4 " +
+                "text-left transition-colors hover:bg-[#151515] " +
+                "focus-visible:outline focus-visible:outline-1 focus-visible:outline-zinc-500";
+
+            const type = document.createElement("span");
+            type.className = "shrink-0 font-mono text-[10px] text-zinc-600";
+            type.textContent =
+                node.type === "directory"
+                    ? "dir"
+                    : node.type === "link"
+                      ? "url"
+                      : "md";
+
+            const label = document.createElement("span");
+            label.className = "truncate font-mono text-xs text-zinc-300";
+            label.textContent = name + (node.type === "directory" ? "/" : "");
+
+            button.append(type, label);
+
+            button.addEventListener("click", () => {
+                if (node.type === "directory") {
+                    navigate([...currentParts, name]);
+                    return;
+                }
+
+                if (node.type === "link") {
+                    window.open(node.url, "_blank", "noopener,noreferrer");
+                    return;
+                }
+
+                if (preview && previewName && previewBody) {
+                    previewName.textContent = name;
+                    previewBody.textContent = node.content;
+                    preview.hidden = false;
+                }
+            });
+
+            files.appendChild(button);
+        }
+    }
+
+    function closeDolphin() {
+        if (overlay) overlay.hidden = true;
+        document.querySelector<HTMLInputElement>("#command-input")?.focus();
+    }
+
+    window.addEventListener("dolphin:open", (event) => {
+        const detail = (event as CustomEvent<{ path: string[] }>).detail;
+
+        const requested = detail?.path ?? [];
+        const node = getNode(requested);
+
+        currentParts = node?.type === "directory" ? [...requested] : [];
+
+        if (overlay) overlay.hidden = false;
+        renderFiles();
+    });
+
+    back?.addEventListener("click", () => {
+        navigate(currentParts.slice(0, -1));
+    });
+
+    home?.addEventListener("click", () => {
+        navigate([]);
+    });
+
+    close?.addEventListener("click", closeDolphin);
+
+    previewClose?.addEventListener("click", () => {
+        if (preview) preview.hidden = true;
+    });
+
+    overlay?.addEventListener("click", (event) => {
+        if (event.target === overlay) closeDolphin();
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && overlay && !overlay.hidden) {
+            closeDolphin();
+        }
+    });
+</script>

@@ -1,0 +1,131 @@
+import "./style.css";
+import { screenWipe } from "./screenWipe.js";
+
+const boot = document.querySelector("#boot");
+const identity = document.querySelector("#identity");
+const bootText = document.querySelector("#boot-text");
+const nameArt = document.querySelector("#name-art");
+const continueButton = document.querySelector("#continue");
+
+const lines = [
+  "ENDORPHINS",
+  "Initializing display...",
+  "Loading interface...",
+  "",
+  "endorphins@endorphins:~$ enter",
+];
+
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+
+async function revealName() {
+  const wrap = document.createElement("div");
+  wrap.id = "name-wrap";
+
+  nameArt.replaceWith(wrap);
+  wrap.appendChild(nameArt);
+
+  const canvas = document.createElement("canvas");
+  canvas.id = "name-pixels";
+  wrap.appendChild(canvas);
+
+  const width = Math.ceil(nameArt.scrollWidth);
+  const height = Math.ceil(nameArt.scrollHeight);
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const sharp = document.createElement("canvas");
+  sharp.width = width;
+  sharp.height = height;
+
+  const sharpContext = sharp.getContext("2d");
+  const style = getComputedStyle(nameArt);
+  const fontSize = parseFloat(style.fontSize);
+  const lineHeight = parseFloat(style.lineHeight) || fontSize * 1.1;
+
+  sharpContext.font =
+    `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+  sharpContext.textBaseline = "top";
+  sharpContext.fillStyle = "#f5f5f5";
+
+  nameArt.textContent.split("\n").forEach((line, index) => {
+    sharpContext.fillText(line, 0, index * lineHeight);
+  });
+
+  const ctx = canvas.getContext("2d");
+  const reducedMotion = matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (!reducedMotion) {
+    const stages = [24, 24, 18, 18, 14, 10, 8, 6, 4, 3, 2, 1];
+
+    for (let frame = 0; frame < stages.length; frame++) {
+      const block = stages[frame];
+      const progress = (frame + 1) / stages.length;
+
+      const low = document.createElement("canvas");
+      low.width = Math.max(1, Math.ceil(width / block));
+      low.height = Math.max(1, Math.ceil(height / block));
+
+      const lowCtx = low.getContext("2d");
+      lowCtx.drawImage(sharp, 0, 0, low.width, low.height);
+
+      ctx.fillStyle = "#050505";
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(low, 0, 0, width, height);
+
+      const cell = Math.max(block, 6);
+
+      for (let y = 0; y < height; y += cell) {
+        for (let x = 0; x < width; x += cell) {
+          if (Math.random() > progress) {
+            ctx.fillStyle = "#050505";
+            ctx.fillRect(x, y, cell, cell);
+          }
+        }
+      }
+
+
+      await sleep(100);
+    }
+  }
+
+  nameArt.style.opacity = "1";
+  canvas.remove();
+}
+
+async function start() {
+  await screenWipe();
+  const response = await fetch("/name.txt");
+
+  if (!response.ok) {
+    throw new Error("Could not load name.txt");
+  }
+
+  nameArt.textContent = await response.text();
+  nameArt.style.opacity = "0";
+  continueButton.hidden = true;
+
+  for (const line of lines) {
+    bootText.textContent += line + "\n";
+    await sleep(320);
+  }
+
+  await sleep(450);
+
+  await screenWipe(() => {
+    boot.hidden = true;
+    identity.hidden = false;
+    identity.classList.add("visible");
+  });
+
+  await revealName();
+
+  continueButton.hidden = false;
+}
+
+start().catch(console.error);
