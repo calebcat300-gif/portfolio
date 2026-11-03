@@ -1,0 +1,226 @@
+---
+---
+
+<button
+    id="site-music-toggle"
+    type="button"
+    hidden
+    aria-label="Toggle background music"
+>
+    music [play]
+</button>
+
+<style is:global>
+    #site-music-toggle {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 10000;
+        padding: 6px 9px;
+        border: 1px solid #242424;
+        border-radius: 2px;
+        background: #070707;
+        color: #aaa;
+        font:
+            11px "DejaVu Sans Mono",
+            monospace;
+        cursor: pointer;
+        text-transform: lowercase;
+    }
+
+    #site-music-toggle:hover {
+        color: #eee;
+        border-color: #444;
+    }
+
+    #site-music-toggle[hidden] {
+        display: none !important;
+    }
+</style>
+
+<script>
+    type MusicState = {
+        audio: HTMLAudioElement;
+        ctx?: AudioContext;
+        gain?: GainNode;
+        started: boolean;
+        muted: boolean;
+        installed: boolean;
+    };
+
+    const w = window as typeof window & {
+        __endorphinsMusic?: MusicState;
+    };
+
+    // A single audio object survives Astro page navigation.
+    const music: MusicState = w.__endorphinsMusic ?? {
+        audio: new Audio("/audio/startup.mp3"),
+        started: false,
+        muted: false,
+        installed: false,
+    };
+
+    w.__endorphinsMusic = music;
+    music.audio.loop = true;
+    music.audio.preload = "auto";
+
+    const volume = 0.14;
+
+    function updateUI() {
+        const button =
+            document.querySelector<HTMLButtonElement>("#site-music-toggle");
+
+        if (!button) return;
+
+        button.hidden = !/^\/home\/?$/.test(window.location.pathname);
+
+        button.textContent = !music.started
+            ? "music [play]"
+            : music.muted
+              ? "music [off]"
+              : "music [on]";
+
+        button.setAttribute(
+            "aria-label",
+            !music.started
+                ? "Play music"
+                : music.muted
+                  ? "Unmute music"
+                  : "Mute music",
+        );
+    }
+
+    function startMusic() {
+        if (music.started) {
+            if (music.audio.paused) {
+                void music.audio.play().catch(() => {});
+            }
+            return;
+        }
+
+        music.started = true;
+
+        const SafariAudioContext = (
+            window as typeof window & {
+                webkitAudioContext?: typeof AudioContext;
+            }
+        ).webkitAudioContext;
+
+        const AudioCtx = window.AudioContext || SafariAudioContext;
+
+        if (AudioCtx && !music.ctx) {
+            try {
+                const ctx = new AudioCtx();
+                const gain = ctx.createGain();
+
+                gain.gain.value = 0;
+                ctx.createMediaElementSource(music.audio).connect(gain);
+                gain.connect(ctx.destination);
+
+                music.ctx = ctx;
+                music.gain = gain;
+            } catch {
+                // Use regular audio volume if Web Audio fails.
+            }
+        }
+
+        if (music.ctx) {
+            void music.ctx.resume().catch(() => {});
+        }
+
+        void music.audio
+            .play()
+            .then(() => {
+                if (music.gain && music.ctx) {
+                    const now = music.ctx.currentTime;
+                    const level = music.gain.gain;
+
+                    level.cancelScheduledValues(now);
+                    level.setValueAtTime(0, now);
+                    level.linearRampToValueAtTime(
+                        music.muted ? 0 : volume,
+                        now + 4.2,
+                    );
+                } else {
+                    const startedAt = performance.now();
+                    music.audio.volume = 0;
+
+                    function fade(now: number) {
+                        const t = Math.min(1, (now - startedAt) / 4200);
+
+                        music.audio.volume = t * volume;
+
+                        if (t < 1) {
+                            requestAnimationFrame(fade);
+                        }
+                    }
+
+                    requestAnimationFrame(fade);
+                }
+
+                updateUI();
+            })
+            .catch(() => {
+                music.started = false;
+                updateUI();
+            });
+
+        updateUI();
+    }
+
+    function toggleMusic() {
+        if (!music.started) {
+            music.muted = false;
+            startMusic();
+            return;
+        }
+
+        music.muted = !music.muted;
+
+        if (music.gain && music.ctx) {
+            const gain = music.gain.gain;
+            const now = music.ctx.currentTime;
+
+            gain.cancelScheduledValues(now);
+            gain.setTargetAtTime(music.muted ? 0 : volume, now, 0.07);
+        } else {
+            music.audio.muted = music.muted;
+        }
+
+        updateUI();
+    }
+
+    if (!music.installed) {
+        music.installed = true;
+
+        const onGesture = (event: Event) => {
+            if (
+                event.target instanceof Element &&
+                event.target.closest("#site-music-toggle")
+            )
+                return;
+
+            startMusic();
+        };
+
+        document.addEventListener("pointerdown", onGesture, { capture: true });
+
+        document.addEventListener("keydown", onGesture, { capture: true });
+
+        document.addEventListener("click", (event) => {
+            if (
+                event.target instanceof Element &&
+                event.target.closest("#site-music-toggle")
+            ) {
+                event.preventDefault();
+                toggleMusic();
+            }
+        });
+
+        document.addEventListener("astro:page-load", updateUI);
+
+        document.addEventListener("astro:after-swap", updateUI);
+    }
+
+    updateUI();
+</script>

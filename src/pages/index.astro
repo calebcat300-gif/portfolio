@@ -1,10 +1,13 @@
 ---
+import { ClientRouter } from "astro:transitions";
+import SiteMusic from "../components/SiteMusic.astro";
 import "../styles/global.css";
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
+<ClientRouter />
 <title>endorphins.wiki</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
         <meta charset="UTF-8" />
@@ -17,5 +20,17 @@ import "../styles/global.css";
         <script>
             import "../legacy/main.js";
         </script>
-    </body>
+    <SiteMusic />
+
+<script>
+    import { navigate } from "astro:transitions/client";
+
+    (window as typeof window & {
+        __siteNavigateHome?: () => void
+    }).__siteNavigateHome = () => {
+        void navigate("/home");
+    };
+</script>
+
+</body>
 </html>

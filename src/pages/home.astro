@@ -1,10 +1,13 @@
 ---
+import { ClientRouter } from "astro:transitions";
+import SiteMusic from "../components/SiteMusic.astro";
 import "../styles/global.css";
 import TechMosaic from "../components/TechMosaic.astro";
 ---
 
 
 <head>
+<ClientRouter />
 <title>endorphins.wiki</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
 </head>
@@ -959,3 +962,5 @@ revealHomeFromEnter();
         filter: grayscale(1) brightness(1.65) contrast(1.1) !important;
     }
 </style>
+
+<SiteMusic />

@@ -132,7 +132,7 @@ window.addEventListener("click", async (event) => {
     try {
         await wipe(() => {
             sessionStorage.setItem("enter-wipe", "1");
-            window.location.assign("/home");
+            (window.__siteNavigateHome ? window.__siteNavigateHome() : window.location.assign("/home"));
         });
     } catch (error) {
         button.removeAttribute("disabled");
