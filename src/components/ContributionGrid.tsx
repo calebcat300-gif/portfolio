@@ -22,7 +22,7 @@ type Tooltip = {
 
 const API =
     import.meta.env.VITE_GITMOSAIC_API_URL ||
-    "http://localhost:8788";
+    "https://gitmosaic-api.calebcat200.workers.dev";
 
 function formatDate(value: string): string {
     return new Date(value + "T12:00:00Z")
