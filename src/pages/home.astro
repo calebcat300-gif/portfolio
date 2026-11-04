@@ -182,7 +182,7 @@ import ContributionGrid from "../components/ContributionGrid";
 <script>
     import { filesystem, type FSNode } from "../lib/filesystem";
 
-    const RPC_URL = "https://api.rpc.devs.surf/v1/users/569305207947788289";
+    const RPC_URL = "https://api.rpc.devs.surf/v1/users/1439728287608999956";
 
     const CAT_URL =
         "https://cdn.discordapp.com/attachments/1441303929865633857/1567049047896756254/IMG_6630.jpg?ex=6aeac3a7&is=6ae97227&hm=3c754ebb9faefb3d7c7a5446e1bbe8ac498b15bfd9b054665a8fcb46eabec516";
@@ -251,11 +251,11 @@ import ContributionGrid from "../components/ContributionGrid";
                 try {
                     const cached = JSON.parse(
                         sessionStorage.getItem(
-                            "endorphins-presence-preload-v1"
+                            "endorphins-presence-preload-v2"
                         ) || "null"
                     );
 
-                    if (cached && Date.now() - cached.at < 120000 && cached.data?.discord_user?.id === "569305207947788289") {
+                    if (cached && Date.now() - cached.at < 120000 && cached.data?.discord_user?.id === "1439728287608999956") {
                         data = cached.data;
                         usedCached = true;
                     }
