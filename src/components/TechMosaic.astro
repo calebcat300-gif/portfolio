@@ -12,139 +12,115 @@ const favicon = (domain: string) =>
 
 // Existing technology logos from Devicon.
 const devicons: Record<string, string> = {
-    "typescript": "typescript/typescript-original",
+    typescript: "typescript/typescript-original",
     "c++": "cplusplus/cplusplus-original",
-    "c": "c/c-original",
-    "python": "python/python-original",
-    "javascript": "javascript/javascript-original",
-    "lua": "lua/lua-original",
-    "bash": "bash/bash-original",
-    "powershell": "powershell/powershell-original",
+    c: "c/c-original",
+    python: "python/python-original",
+    javascript: "javascript/javascript-original",
+    lua: "lua/lua-original",
+    bash: "bash/bash-original",
+    powershell: "powershell/powershell-original",
     "windows batch": "windows11/windows11-original",
-    "go": "go/go-original",
+    go: "go/go-original",
     "cuda c++": "nvidia/nvidia-original",
     "ptx assembly": "nvidia/nvidia-original",
-    "glsl": "opengl/opengl-original",
+    glsl: "opengl/opengl-original",
     "metal shading language (msl)": "apple/apple-original",
-    "react": "react/react-original",
-    "vue": "vuejs/vuejs-original",
+    react: "react/react-original",
+    vue: "vuejs/vuejs-original",
     "node.js": "nodejs/nodejs-original",
-    "vite": "vitejs/vitejs-original",
+    vite: "vitejs/vitejs-original",
     "three.js": "threejs/threejs-original",
-    "webgl": "webgl/webgl-original",
-    "html": "html5/html5-original",
-    "css": "css3/css3-original",
+    webgl: "webgl/webgl-original",
+    html: "html5/html5-original",
+    css: "css3/css3-original",
     "tailwind css": "tailwindcss/tailwindcss-original",
-    "sqlite": "sqlite/sqlite-original",
-    "postgresql": "postgresql/postgresql-original",
-    "mongodb": "mongodb/mongodb-original",
-    "mysql": "mysql/mysql-original",
-    "redis": "redis/redis-original",
+    sqlite: "sqlite/sqlite-original",
+    postgresql: "postgresql/postgresql-original",
+    mongodb: "mongodb/mongodb-original",
+    mysql: "mysql/mysql-original",
+    redis: "redis/redis-original",
     "arch linux": "archlinux/archlinux-original",
-    "gentoo": "gentoo/gentoo-original",
-    "docker": "docker/docker-original",
-    "nix": "nixos/nixos-original",
-    "git": "git/git-original",
-    "cmake": "cmake/cmake-original",
-    "cuda": "nvidia/nvidia-original",
-    "pytorch": "pytorch/pytorch-original",
-    "tensorflow": "tensorflow/tensorflow-original",
-    "vulkan": "vulkan/vulkan-original",
-    "metal": "apple/apple-original",
-    "blender": "blender/blender-original",
+    gentoo: "gentoo/gentoo-original",
+    docker: "docker/docker-original",
+    nix: "nixos/nixos-original",
+    git: "git/git-original",
+    cmake: "cmake/cmake-original",
+    cuda: "nvidia/nvidia-original",
+    pytorch: "pytorch/pytorch-original",
+    tensorflow: "tensorflow/tensorflow-original",
+    vulkan: "vulkan/vulkan-original",
+    metal: "apple/apple-original",
+    blender: "blender/blender-original",
     "adobe after effects": "aftereffects/aftereffects-original",
-    "tauri": "tauri/tauri-original",
+    tauri: "tauri/tauri-original",
 };
 
 // Real logos for technologies that previously used letters.
 const special: Record<string, string[]> = {
-    "x86/x64 assembly": [
-        "https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/nasm.svg",
-        si("intel"),
-    ],
+    "x86/x64 assembly": ["https://user-images.githubusercontent.com/103866722/194773833-8571f323-4fa8-4036-a51c-57b9d29c683b.svg"],
+    "glsl": ["https://www.khronos.org/assets/images/api_logos/opengl.svg"],
+    "sql": ["https://www.techmonitor.ai/wp-content/uploads/sites/29/2016/06/SQL.png"],
+    "cuda c++": ["https://migocpp.wordpress.com/wp-content/uploads/2018/03/badge-nvidia-cuda-cpp.png"],
+    "windows batch": ["https://bashlogo.com/img/symbol/png/monochrome_dark.png"],
+    "openai-compatible apis": ["https://fastly.jsdelivr.net/gh/clash-verge-rev/clash-verge-rev.github.io@main/docs/assets/icons/chatgpt.svg", "https://unpkg.com/@lobehub/icons-static-svg@latest/icons/openai.svg"],
+    autohotkey: [si("autohotkey")],
 
-    "autohotkey": [
-        si("autohotkey"),
-    ],
+    hip: [favicon("rocm.docs.amd.com"), si("amd")],
 
-    "sql": [
-        "https://commons.wikimedia.org/wiki/Special:Redirect/file/Sql-icon.svg",
-        si("mysql"),
-    ],
+    "void linux": [si("voidlinux")],
 
-    "hip": [
-        favicon("rocm.docs.amd.com"),
-        si("amd"),
-    ],
+    "artix linux": [si("artixlinux")],
 
-    "void linux": [
-        si("voidlinux"),
-    ],
+    cachyos: [si("cachyos")],
 
-    "artix linux": [
-        si("artixlinux"),
-    ],
-
-    "cachyos": [
-        si("cachyos"),
-    ],
-
-    "bedrock linux": [
-        favicon("bedrocklinux.org"),
-    ],
-
-    "ghidra": [
+    "bedrock linux": [favicon("bedrocklinux.org")],
+    ghidra: [
         "https://raw.githubusercontent.com/NationalSecurityAgency/ghidra/master/Ghidra/Framework/Gui/src/main/resources/images/GhidraIcon256.png",
         "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ghidra_logo.svg",
     ],
 
-    "binary ninja": [
-        favicon("binary.ninja"),
-    ],
+    "binary ninja": [favicon("binary.ninja")],
 
-    "sglang": [
+    sglang: [
         "https://raw.githubusercontent.com/sgl-project/sgl-docs/main/favicon.png",
         favicon("docs.sglang.ai"),
     ],
 
-    "ollama": [
-        si("ollama"),
-    ],
+    ollama: [si("ollama")],
 
     "llama.cpp": [
         "https://raw.githubusercontent.com/ggml-org/llama.brand/master/icon/icon-light.svg",
         favicon("llama.cpp"),
     ],
 
-    "ggml": [
+    ggml: [
         "https://raw.githubusercontent.com/ggml-org/media/refs/heads/master/logo/ggml-logo.jpg",
     ],
 
-    "openai-compatible apis": [
-        si("openai"),
-    ],
+    "openai-compatible apis": [si("openai")],
 };
 
 const alternativeSlugs: Record<string, string> = {
-    "typescript": "typescript",
-    "javascript": "javascript",
-    "python": "python",
-    "lua": "lua",
-    "bash": "gnubash",
-    "powershell": "powershell",
-    "go": "go",
-    "react": "react",
-    "vue": "vuedotjs",
+    typescript: "typescript",
+    javascript: "javascript",
+    python: "python",
+    lua: "lua",
+    bash: "gnubash",
+    powershell: "powershell",
+    go: "go",
+    react: "react",
+    vue: "vuedotjs",
     "node.js": "nodedotjs",
-    "vite": "vite",
+    vite: "vite",
     "three.js": "threedotjs",
     "tailwind css": "tailwindcss",
-    "docker": "docker",
-    "git": "git",
+    docker: "docker",
+    git: "git",
     "arch linux": "archlinux",
-    "gentoo": "gentoo",
-    "blender": "blender",
-    "vulkan": "vulkan",
+    gentoo: "gentoo",
+    blender: "blender",
+    vulkan: "vulkan",
 };
 
 type Item = {
@@ -196,35 +172,31 @@ for (const group of Object.values(technologies)) {
 }
 
 const items = [...entries.values()].sort(
-    (a, b) =>
-        Number(a.planned) - Number(b.planned)
+    (a, b) => Number(a.planned) - Number(b.planned),
 );
 ---
 
-<section
-    aria-label="technologies"
-    class="min-w-0 flex-1 lg:h-[104px]"
->
-    <p class="pixel mb-2 text-[15px] leading-none text-zinc-500">
+<section aria-label="technologies" class="min-w-0 flex-1 lg:h-[84px]">
+    <p class="pixel mb-1 text-[13px] leading-none text-zinc-500">
         technologies
     </p>
 
     <div
-        class="flex flex-wrap gap-2 lg:grid lg:grid-flow-col lg:grid-rows-3 lg:items-center lg:gap-x-1 lg:gap-y-1"
+        class="flex flex-wrap gap-1 lg:grid lg:grid-flow-col lg:grid-rows-3 lg:items-center lg:gap-x-1 lg:gap-y-1"
         style={`grid-template-columns: repeat(${Math.ceil(items.length / 3)}, minmax(0, 1fr))`}
     >
         {items.map((item) => (
             <span
-                class="group relative inline-flex size-6 shrink-0 items-center justify-center outline-none lg:justify-self-center"
+                class="group relative inline-flex size-5 shrink-0 items-center justify-center outline-none lg:justify-self-center"
                 tabindex="0"
                 aria-label={`${item.name}, ${item.planned ? "planned" : "worked with"}`}
             >
                 <canvas
-                    width="20"
-                    height="20"
+                    width="18"
+                    height="18"
                     data-sources={JSON.stringify(item.sources)}
                     aria-hidden="true"
-                    class="size-[24px] opacity-75
+                    class="size-[18px] opacity-75
                            grayscale brightness-125
                            contrast-125 invert-[.75]
                            [image-rendering:pixelated]
@@ -244,13 +216,9 @@ const items = [...entries.values()].sort(
                            shadow-[0_8px_24px_#000]
                            group-hover:block group-focus:block"
                 >
-                    <span class="block text-zinc-600">
-                        $ inspect
-                    </span>
+                    <span class="block text-zinc-600">$ inspect</span>
 
-                    <span class="block text-zinc-200">
-                        {item.name}
-                    </span>
+                    <span class="block text-zinc-200">{item.name}</span>
 
                     <span class="block text-zinc-500">
                         {item.planned ? "planned" : "worked with"}
@@ -262,18 +230,15 @@ const items = [...entries.values()].sort(
 </section>
 
 <script>
-    const canvases =
-        document.querySelectorAll<HTMLCanvasElement>(
-            "canvas[data-sources]"
-        );
+    const canvases = document.querySelectorAll<HTMLCanvasElement>(
+        "canvas[data-sources]",
+    );
 
     for (const canvas of canvases) {
         let sources: string[] = [];
 
         try {
-            sources = JSON.parse(
-                canvas.dataset.sources ?? "[]"
-            );
+            sources = JSON.parse(canvas.dataset.sources ?? "[]");
         } catch {
             continue;
         }
@@ -294,18 +259,13 @@ const items = [...entries.values()].sort(
                 const ctx = canvas.getContext("2d");
                 if (!ctx) return;
 
-                ctx.clearRect(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 ctx.imageSmoothingEnabled = true;
 
                 const ratio = Math.min(
                     canvas.width / image.width,
-                    canvas.height / image.height
+                    canvas.height / image.height,
                 );
 
                 const width = image.width * ratio;
@@ -316,7 +276,7 @@ const items = [...entries.values()].sort(
                     (canvas.width - width) / 2,
                     (canvas.height - height) / 2,
                     width,
-                    height
+                    height,
                 );
             };
 
