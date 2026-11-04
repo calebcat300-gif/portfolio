@@ -52,7 +52,11 @@ function alignWeek(days: Day[]): (Day | null)[] {
     });
 }
 
-export default function ContributionGrid() {
+export default function ContributionGrid({
+    username = "calebcat300-gif",
+}: {
+    username?: string;
+}) {
     const [data, setData] = useState<APIResponse | null>(null);
     const [error, setError] = useState("");
     const [tooltip, setTooltip] = useState<Tooltip | null>(null);
@@ -64,7 +68,7 @@ export default function ContributionGrid() {
         async function load() {
             try {
                 const response = await fetch(
-                    `${API}/v1/users/calebcat300-gif/contributions`,
+                    `${API}/v1/users/${encodeURIComponent(username)}/contributions`,
                     { signal: controller.signal }
                 );
 
@@ -87,8 +91,16 @@ export default function ContributionGrid() {
         }
 
         void load();
-        return () => controller.abort();
-    }, []);
+
+        const interval = window.setInterval(() => {
+            void load();
+        }, 5 * 60 * 1000);
+
+        return () => {
+            window.clearInterval(interval);
+            controller.abort();
+        };
+    }, [username]);
 
     useEffect(() => {
         if (data && scrollRef.current) {
