@@ -12,7 +12,80 @@ import "../styles/global.css";
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        </head>
+        
+<script is:inline>
+(() => {
+    const KEY = "endorphins-presence-preload-v1";
+    const URL = "https://api.lanyard.rest/v1/users/1439728287608999956";
+
+    // Browser may cache the home document before navigation.
+    const link = document.createElement("link");
+    link.rel = "prefetch";
+    link.href = "/home";
+    document.head.appendChild(link);
+
+    function warmImage(url) {
+        if (!url) return;
+
+        const image = new Image();
+        image.decoding = "async";
+        image.src = url;
+
+        if (image.decode) {
+            image.decode().catch(() => {});
+        }
+    }
+
+    fetch(URL, { cache: "no-store" })
+        .then(response => {
+            if (!response.ok) throw new Error("Lanyard unavailable");
+            return response.json();
+        })
+        .then(payload => {
+            const data = payload.data;
+            if (!data) return;
+
+            try {
+                sessionStorage.setItem(KEY, JSON.stringify({
+                    data,
+                    at: Date.now()
+                }));
+            } catch {}
+
+            // Preload the avatar before /home opens.
+            const user = data.discord_user;
+
+            if (user?.id && user?.avatar) {
+                warmImage(
+                    `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
+                );
+            }
+
+            // Preload standard Discord application assets.
+            const activity = data.activities?.find(a => a.type === 0);
+            const asset = activity?.assets?.large_image;
+
+            if (asset?.startsWith("http")) {
+                warmImage(asset);
+            } else if (asset && activity?.application_id) {
+                if (asset.startsWith("mp:external/")) {
+                    warmImage(
+                        `https://media.discordapp.net/external/${asset.slice(12)}`
+                    );
+                } else {
+                    warmImage(
+                        `https://cdn.discordapp.com/app-assets/${activity.application_id}/${asset}.png`
+                    );
+                }
+            }
+        })
+        .catch(() => {
+            // /home will fetch normally if preloading fails.
+        });
+})();
+</script>
+
+</head>
 
     <body>
         <div id="app"></div>

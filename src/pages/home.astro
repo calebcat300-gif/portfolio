@@ -93,7 +93,7 @@ import ContributionGrid from "../components/ContributionGrid";
             <TechMosaic />
         </div>
         <div class="gitmosaic-section">
-            <ContributionGrid client:load />
+            <ContributionGrid client:load username="calebcat300-gif" />
         </div>
         <!-- terminal -->
         <div class="mt-10 max-w-3xl pb-16 font-mono text-[13px]">
@@ -238,17 +238,43 @@ import ContributionGrid from "../components/ContributionGrid";
         }
     }
 
+    let presenceCacheChecked = false;
+
     async function loadPresence() {
         try {
-            const response = await fetch(RPC_URL, {
-                cache: "no-store",
-            });
+            let data: any = null;
+            let usedCached = false;
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+            if (!presenceCacheChecked) {
+                presenceCacheChecked = true;
+
+                try {
+                    const cached = JSON.parse(
+                        sessionStorage.getItem(
+                            "endorphins-presence-preload-v1"
+                        ) || "null"
+                    );
+
+                    if (cached && Date.now() - cached.at < 120000) {
+                        data = cached.data;
+                        usedCached = true;
+                    }
+                } catch {}
             }
 
-            const { data } = await response.json();
+            if (!data) {
+                const response = await fetch(RPC_URL, {
+                    cache: "no-store",
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const payload = await response.json();
+                data = payload.data ?? payload;
+            }
+
             const user = data.discord_user;
 
             const avatar = document.querySelector<HTMLImageElement>("#avatar");
@@ -292,6 +318,13 @@ import ContributionGrid from "../components/ContributionGrid";
             }
 
             await loadActivityImage(getActivityImage(activity));
+
+            // Refresh shortly after displaying prefetched data.
+            if (usedCached) {
+                window.setTimeout(() => {
+                    void loadPresence();
+                }, 2500);
+            }
         } catch (error) {
             console.error("lanyard rpc failed:", error);
         }
