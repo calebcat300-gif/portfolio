@@ -176,27 +176,25 @@ const items = [...entries.values()].sort(
 );
 ---
 
-<section aria-label="technologies" class="min-w-0 flex-1 lg:h-[84px]">
+<section aria-label="technologies" class="min-w-0 flex-1 lg:h-[108px]">
     <p class="pixel mb-1 text-[13px] leading-none text-zinc-500">
         technologies
     </p>
 
     <div
-        class="flex flex-wrap gap-1 lg:grid lg:grid-flow-col lg:grid-rows-3 lg:items-center lg:gap-x-1 lg:gap-y-1"
+        class="flex flex-wrap gap-1 lg:grid lg:grid-flow-col lg:grid-rows-3 lg:items-center lg:gap-x-2 lg:gap-y-2"
         style={`grid-template-columns: repeat(${Math.ceil(items.length / 3)}, minmax(0, 1fr))`}
     >
         {items.map((item) => (
             <span
-                class="group relative inline-flex size-5 shrink-0 items-center justify-center outline-none lg:justify-self-center"
+                class="group relative inline-flex size-7 shrink-0 items-center justify-center outline-none lg:justify-self-center"
                 tabindex="0"
                 aria-label={`${item.name}, ${item.planned ? "planned" : "worked with"}`}
             >
-                <canvas
-                    width="18"
-                    height="18"
+                <canvas width="32" height="32"
                     data-sources={JSON.stringify(item.sources)}
                     aria-hidden="true"
-                    class="size-[18px] opacity-75
+                    class="size-[26px] opacity-75
                            grayscale brightness-125
                            contrast-125 invert-[.75]
                            [image-rendering:pixelated]
