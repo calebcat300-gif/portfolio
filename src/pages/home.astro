@@ -3,13 +3,13 @@ import { ClientRouter } from "astro:transitions";
 import SiteMusic from "../components/SiteMusic.astro";
 import "../styles/global.css";
 import TechMosaic from "../components/TechMosaic.astro";
+import ContributionGrid from "../components/ContributionGrid";
 ---
 
-
 <head>
-<ClientRouter />
-<title>endorphins.wiki</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
+    <ClientRouter />
+    <title>endorphins.wiki</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=transparent-2" />
 </head>
 <!-- home-wipe-reveal -->
 <style is:global>
@@ -59,40 +59,42 @@ import TechMosaic from "../components/TechMosaic.astro";
 
         <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-6">
             <section class="w-full max-w-[380px] rounded-lg border border-[#101010] bg-[#050505] px-3.5 py-3 lg:h-[104px] lg:w-[380px] lg:shrink-0">
-            <p class="pixel mb-2 text-[15px] leading-none text-zinc-500">
-                status
-            </p>
+                <p class="pixel mb-2 text-[15px] leading-none text-zinc-500">
+                    status
+                </p>
 
-            <div class="flex items-center gap-3">
-                <canvas
-                    id="activity-icon"
-                    width="24"
-                    height="24"
-                    class="size-12 shrink-0 rounded-md grayscale contrast-125 [image-rendering:pixelated]"
-                    hidden
-                ></canvas>
+                <div class="flex items-center gap-3">
+                    <canvas
+                        id="activity-icon"
+                        width="24"
+                        height="24"
+                        class="size-12 shrink-0 rounded-md grayscale contrast-125 [image-rendering:pixelated]"
+                        hidden
+                    ></canvas>
 
-                <div class="min-w-0">
-                    <h2
-                        id="activity-name"
-                        class="pixel text-[20px] leading-tight text-zinc-200"
-                    ></h2>
+                    <div class="min-w-0">
+                        <h2
+                            id="activity-name"
+                            class="pixel text-[20px] leading-tight text-zinc-200"
+                        ></h2>
 
-                    <p
-                        id="activity-details"
-                        class="mt-0.5 truncate font-mono text-[11px] text-zinc-400"
-                    ></p>
+                        <p
+                            id="activity-details"
+                            class="mt-0.5 truncate font-mono text-[11px] text-zinc-400"
+                        ></p>
 
-                    <p
-                        id="activity-state"
-                        class="mt-0.5 truncate font-mono text-[11px] text-zinc-600"
-                    ></p>
+                        <p
+                            id="activity-state"
+                            class="mt-0.5 truncate font-mono text-[11px] text-zinc-600"
+                        ></p>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
             <TechMosaic />
         </div>
-
+        <div class="gitmosaic-section">
+            <ContributionGrid client:load />
+        </div>
         <!-- terminal -->
         <div class="mt-10 max-w-3xl pb-16 font-mono text-[13px]">
             <hr class="mb-5 border-[#151515]" />
@@ -169,12 +171,18 @@ import TechMosaic from "../components/TechMosaic.astro";
     #dolphin-tui[hidden] {
         display: none !important;
     }
+
+    .gitmosaic-section {
+        width: 100%;
+        min-width: 0;
+        margin-top: 24px;
+    }
 </style>
 
 <script>
     import { filesystem, type FSNode } from "../lib/filesystem";
 
-    const RPC_URL = "https://rpc.fmod.dev/v1/users/1439728287608999956";
+    const RPC_URL = "https://api.lanyard.rest/v1/users/1439728287608999956";
 
     const CAT_URL =
         "https://cdn.discordapp.com/attachments/1441303929865633857/1567049047896756254/IMG_6630.jpg?ex=6aeac3a7&is=6ae97227&hm=3c754ebb9faefb3d7c7a5446e1bbe8ac498b15bfd9b054665a8fcb46eabec516";
@@ -240,7 +248,7 @@ import TechMosaic from "../components/TechMosaic.astro";
                 throw new Error(`HTTP ${response.status}`);
             }
 
-            const data = await response.json();
+            const { data } = await response.json();
             const user = data.discord_user;
 
             const avatar = document.querySelector<HTMLImageElement>("#avatar");
@@ -285,7 +293,7 @@ import TechMosaic from "../components/TechMosaic.astro";
 
             await loadActivityImage(getActivityImage(activity));
         } catch (error) {
-            console.error("fmod rpc failed:", error);
+            console.error("lanyard rpc failed:", error);
         }
     }
 
@@ -882,17 +890,17 @@ import TechMosaic from "../components/TechMosaic.astro";
 
     updatePrompt();
 
-// home-wipe-reveal-animation
-function revealHomeFromEnter() {
-    if (sessionStorage.getItem("enter-wipe") !== "1") return;
+    // home-wipe-reveal-animation
+    function revealHomeFromEnter() {
+        if (sessionStorage.getItem("enter-wipe") !== "1") return;
 
-    sessionStorage.removeItem("enter-wipe");
+        sessionStorage.removeItem("enter-wipe");
 
-    const canvas = document.createElement("canvas");
-    canvas.width = 96;
-    canvas.height = 54;
+        const canvas = document.createElement("canvas");
+        canvas.width = 96;
+        canvas.height = 54;
 
-    canvas.style.cssText = `
+        canvas.style.cssText = `
         position: fixed;
         inset: 0;
         width: 100%;
@@ -902,56 +910,56 @@ function revealHomeFromEnter() {
         pointer-events: none;
     `;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-        document.documentElement.classList.remove("entering-home");
-        return;
-    }
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+            document.documentElement.classList.remove("entering-home");
+            return;
+        }
 
-    const w = canvas.width;
-    const h = canvas.height;
+        const w = canvas.width;
+        const h = canvas.height;
 
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, w, h);
-
-    document.body.appendChild(canvas);
-    document.documentElement.classList.remove("entering-home");
-
-    const offsets = Array.from(
-        { length: w },
-        () => Math.floor(Math.random() * 7) - 3
-    );
-
-    const start = performance.now();
-    const duration = 600;
-
-    function frame(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const frontier = progress * (h + 12) - 6;
-
-        ctx.clearRect(0, 0, w, h);
         ctx.fillStyle = "#000";
+        ctx.fillRect(0, 0, w, h);
 
-        for (let x = 0; x < w; x++) {
-            const edge = Math.max(
-                0,
-                Math.min(h, Math.floor(frontier + offsets[x]))
-            );
+        document.body.appendChild(canvas);
+        document.documentElement.classList.remove("entering-home");
 
-            ctx.fillRect(x, edge, 1, h - edge);
+        const offsets = Array.from(
+            { length: w },
+            () => Math.floor(Math.random() * 7) - 3,
+        );
+
+        const start = performance.now();
+        const duration = 600;
+
+        function frame(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            const frontier = progress * (h + 12) - 6;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = "#000";
+
+            for (let x = 0; x < w; x++) {
+                const edge = Math.max(
+                    0,
+                    Math.min(h, Math.floor(frontier + offsets[x])),
+                );
+
+                ctx.fillRect(x, edge, 1, h - edge);
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            } else {
+                canvas.remove();
+            }
         }
 
-        if (progress < 1) {
-            requestAnimationFrame(frame);
-        } else {
-            canvas.remove();
-        }
+        requestAnimationFrame(frame);
     }
 
-    requestAnimationFrame(frame);
-}
-
-revealHomeFromEnter();
+    revealHomeFromEnter();
 </script>
 
 <style is:global>
@@ -964,3 +972,137 @@ revealHomeFromEnter();
 </style>
 
 <SiteMusic />
+
+<style is:global>
+/* Home layout */
+.home-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.home-summary-grid > * {
+  min-width: 0;
+  height: 100%;
+}
+
+/* Gitmosaic */
+.gitmosaic-section {
+  width: 100%;
+  min-width: 0;
+  margin: 18px 0 28px;
+  padding: 22px;
+  background: #0b0b0b;
+  border: 1px solid #242424;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.gitmosaic-section .gm-root {
+  max-width: none;
+  width: 100%;
+}
+
+.gitmosaic-section .gm-header {
+  margin-bottom: 20px;
+}
+
+.gitmosaic-section .gm-scroll {
+  width: 100%;
+}
+
+.gitmosaic-section .gm-footer {
+  margin-top: 16px;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .home-summary-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .gitmosaic-section {
+    padding: 14px;
+    margin: 12px 0 22px;
+  }
+}
+</style>
+
+<style is:global>
+/* ===== clean home layout ===== */
+
+.home-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.home-summary-grid > * {
+  min-width: 0;
+  height: auto;
+}
+
+/* Contribution graph — completely unboxed */
+.gitmosaic-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0;
+  margin: 28px 0 36px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.gitmosaic-section .gm-root {
+  width: 100%;
+  max-width: none;
+}
+
+.gitmosaic-section .gm-header {
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.gitmosaic-section .gm-scroll {
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+.gitmosaic-section .gm-footer {
+  margin-top: 10px;
+  font-size: 10px;
+}
+
+/* No artificial panels around the grid */
+.gitmosaic-section :is(.gm-calendar, .gm-graph) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .home-summary-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    margin-bottom: 24px;
+  }
+
+  .gitmosaic-section {
+    margin: 24px 0 30px !important;
+  }
+
+  .gitmosaic-section .gm-header {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+</style>
